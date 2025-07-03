@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="xmlbeans-5.1.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/xmlbeans-5.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/poi-ooxml-full-5.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/poi-ooxml-5.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/poi-5.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/commons-io-2.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/commons-compress-1.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/commons-collections4-4.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

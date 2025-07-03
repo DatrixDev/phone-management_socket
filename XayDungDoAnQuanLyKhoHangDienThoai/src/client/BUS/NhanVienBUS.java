@@ -1,0 +1,420 @@
+package client.BUS;
+
+import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import client.helper.Validation;
+import client.view.form.AddEmployeeForm;
+import client.view.form.EditEmployeeForm;
+import client.view.form.ViewEmployeeForm;
+import client.view.views.EmployeeView;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import server.DAO.NhanVienDAO;
+import server.DAO.TaiKhoanDAO;
+
+public class NhanVienBUS implements ActionListener, DocumentListener {
+
+    public EmployeeView nv;
+    private JTextField textField;
+    public ArrayList<shared.models.NhanVien> listNv = NhanVienDAO.getInstance().selectAll();
+    public NhanVienDAO nhanVienDAO = NhanVienDAO.getInstance();
+    private EmployeeView view;
+
+    public NhanVienBUS() {
+    }
+
+    public NhanVienBUS(EmployeeView nv) {
+        this.nv = nv;
+    }
+
+    public NhanVienBUS(JTextField textField, EmployeeView nv) {
+        this.textField = textField;
+        this.nv = nv;
+    }
+
+    public ArrayList<shared.models.NhanVien> getAll() {
+        return this.listNv;
+    }
+
+    public shared.models.NhanVien getByIndex(int index) {
+        return this.listNv.get(index);
+    }
+
+    public int getIndexById(int manv) {
+        int i = 0;
+        int vitri = -1;
+        int size = this.listNv.size();
+        while (i < size && vitri == -1) {
+            if (this.listNv.get(i).getManv() == manv) {
+                vitri = i;
+            } else {
+                i++;
+            }
+        }
+        return vitri;
+    }
+
+
+
+    public String getNameById(int manv) {
+        return nhanVienDAO.selectById(manv+"").getHoten();
+    }
+
+    public String[] getArrTenNhanVien() {
+        int size = listNv.size();
+        String[] result = new String[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = listNv.get(i).getHoten();
+        }
+        return result;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String btn = e.getActionCommand();
+        switch (btn) {
+            case "THÊM" -> {
+                AddEmployeeForm add = new AddEmployeeForm();
+            }
+            case "SỬA" -> {
+                int index = nv.getRow();
+                if (index < 0) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên cần sửa");
+                } else {
+                    EditEmployeeForm edit = new EditEmployeeForm();
+                }
+            }
+            case "XÓA" -> {
+                if (nv.getRow() < 0) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên cần xóa");
+                } else {
+                    deleteNv(nv.getNhanVien());
+                }
+            }
+            case "CHI TIẾT" -> {
+                if (nv.getRow() < 0) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên cần xóa");
+                } else {
+                    ViewEmployeeForm view = new ViewEmployeeForm();
+                }
+            }
+            case "NHẬP EXCEL" -> {
+                importExcel();
+            }
+            case "XUẤT EXCEL" -> {
+                String[] header = new String[]{"MãNV", "Tên nhân viên", "Email nhân viên", "Số điên thoại", "Giới tính", "Ngày sinh"};
+                exportExcel(listNv, header);
+            }
+        }
+        nv.loadDataTable(listNv);
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        String keyword = textField.getText().trim().toLowerCase();
+        String type = view.getTopPanel().getCbxChoose().getSelectedItem().toString(); // giống view.getTopPanel().getCbxChoose()
+
+        if (keyword.isEmpty()) {
+            nv.loadDataTable(listNv);
+        } else {
+            ArrayList<shared.models.NhanVien> listSearch = search(keyword, type);
+            searchLoadTable(listSearch);
+        }
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        String keyword = textField.getText().trim().toLowerCase();
+        String type = view.getTopPanel().getCbxChoose().getSelectedItem().toString();
+
+        if (keyword.isEmpty()) {
+            nv.loadDataTable(listNv);
+        } else {
+            ArrayList<shared.models.NhanVien> listSearch = search(keyword, type);
+            searchLoadTable(listSearch);
+        }
+    }
+
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+//        System.out.println("Text field changed: " + textField.getText());
+    }
+
+    public void insertNv(shared.models.NhanVien nv) {
+        listNv.add(nv);
+    }
+
+    public void updateNv(int index, shared.models.NhanVien nv) {
+        listNv.set(index, nv);
+    }
+
+    public int getIndex() {
+        return nv.getRow();
+    }
+
+    public void deleteNv(shared.models.NhanVien nv) {
+        NhanVienDAO.getInstance().delete(nv.getManv() + "");
+        TaiKhoanDAO.getInstance().delete(nv.getManv() + "");
+        listNv.removeIf(n -> (n.getManv() == nv.getManv()));
+        loadTable();
+    }
+
+    public void loadTable() {
+        nv.loadDataTable(listNv);
+    }
+
+    public void searchLoadTable(ArrayList<shared.models.NhanVien> list) {
+        nv.loadDataTable(list);
+    }
+
+    public void openFile(String file) {
+        try {
+            File path = new File(file);
+            Desktop.getDesktop().open(path);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void exportExcel(ArrayList<shared.models.NhanVien> list, String[] header) {
+        try {
+            if (!list.isEmpty()) {
+                JFileChooser jFileChooser = new JFileChooser();
+                // Sử dụng null làm owner => hiện dialog ở giữa màn hình
+                int userSelection = jFileChooser.showSaveDialog(null);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File saveFile = jFileChooser.getSelectedFile();
+                    if (saveFile != null) {
+                        // Thêm phần mở rộng .xlsx nếu chưa có
+                        if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
+                            saveFile = new File(saveFile.toString() + ".xlsx");
+                        }
+
+                        Workbook wb = new XSSFWorkbook();
+                        Sheet sheet = wb.createSheet("Nhân viên");
+
+                        writeHeader(header, sheet, 0);
+                        int rowIndex = 1;
+                        for (shared.models.NhanVien nv : list) {
+                            Row row = sheet.createRow(rowIndex++);
+                            writeNhanVien(nv, row);
+                        }
+
+                        FileOutputStream out = new FileOutputStream(saveFile);
+                        wb.write(out);
+                        wb.close();
+                        out.close();
+
+                        openFile(saveFile.toString());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reloadFromDB() {
+        this.listNv = nhanVienDAO.selectAll();
+    }
+
+    public ArrayList<shared.models.NhanVien> search(String text, String luachon) {
+        text = text.toLowerCase();
+        ArrayList<shared.models.NhanVien> result = new ArrayList<>();
+
+        switch (luachon) {
+            case "Tất cả" -> {
+                for (shared.models.NhanVien i : this.listNv) {
+                    if (i.getHoten().toLowerCase().contains(text) ||
+                            i.getEmail().toLowerCase().contains(text) ||
+                            i.getSdt().toLowerCase().contains(text)) {
+                        result.add(i);
+                    }
+                }
+            }
+            case "Họ tên" -> {
+                for (shared.models.NhanVien i : this.listNv) {
+                    if (i.getHoten().toLowerCase().contains(text)) {
+                        result.add(i);
+                    }
+                }
+            }
+            case "Email" -> {
+                for (shared.models.NhanVien i : this.listNv) {
+                    if (i.getEmail().toLowerCase().contains(text)) {
+                        result.add(i);
+                    }
+                }
+            }
+            default -> throw new IllegalArgumentException("Loại tìm kiếm không hợp lệ: " + luachon);
+        }
+
+        return result;
+    }
+
+
+
+    private static void writeHeader(String[] list, Sheet sheet, int rowIndex) {
+        CellStyle cellStyle = createStyleForHeader(sheet);
+        Row row = sheet.createRow(rowIndex);
+        Cell cell;
+        for (int i = 0; i < list.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellStyle(cellStyle);
+            cell.setCellValue(list[i]);
+            sheet.autoSizeColumn(i);
+        }
+    }
+
+    private static CellStyle createStyleForHeader(Sheet sheet) {
+        // Create font
+        Font font = sheet.getWorkbook().createFont();
+        font.setFontName("Times New Roman");
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 14); // font size
+        font.setColor(IndexedColors.WHITE.getIndex()); // text color
+
+        // Create CellStyle
+        CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+        cellStyle.setFont(font);
+        cellStyle.setFillForegroundColor(IndexedColors.BLUE.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        return cellStyle;
+    }
+
+    private static void writeNhanVien(shared.models.NhanVien nv, Row row) {
+        CellStyle cellStyleFormatNumber = null;
+        if (cellStyleFormatNumber == null) {
+            // Format number
+            short format = (short) BuiltinFormats.getBuiltinFormat("#,##0");
+            // DataFormat df = workbook.createDataFormat();
+            // short format = df.getFormat("#,##0");
+
+            //Create CellStyle
+            Workbook workbook = row.getSheet().getWorkbook();
+            cellStyleFormatNumber = workbook.createCellStyle();
+            cellStyleFormatNumber.setDataFormat(format);
+        }
+        Cell cell = row.createCell(0);
+        cell.setCellValue(nv.getManv());
+
+        cell = row.createCell(1);
+        cell.setCellValue(nv.getHoten());
+
+        cell = row.createCell(2);
+        cell.setCellValue(nv.getEmail());
+
+        cell = row.createCell(3);
+        cell.setCellValue(nv.getSdt());
+
+        cell = row.createCell(4);
+        cell.setCellValue(nv.getGioitinh() == 1 ? "Nam" : "Nữ");
+
+        cell = row.createCell(5);
+        cell.setCellValue("" + nv.getNgaysinh());
+    }
+
+    public void importExcel() {
+        File excelFile;
+        FileInputStream excelFIS = null;
+        BufferedInputStream excelBIS = null;
+        XSSFWorkbook excelJTableImport = null;
+        JFileChooser jf = new JFileChooser();
+        int result = jf.showOpenDialog(null);
+        jf.setDialogTitle("Open file");
+        Workbook workbook = null;
+        int k = 0;
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                excelFile = jf.getSelectedFile();
+                excelFIS = new FileInputStream(excelFile);
+                excelBIS = new BufferedInputStream(excelFIS);
+                excelJTableImport = new XSSFWorkbook(excelBIS);
+                XSSFSheet excelSheet = excelJTableImport.getSheetAt(0);
+
+                for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
+                    int check = 1;
+                    int gt;
+                    XSSFRow excelRow = excelSheet.getRow(row);
+                    int id = NhanVienDAO.getInstance().getAutoIncrement();
+                    String tennv = excelRow.getCell(0).getStringCellValue();
+                    String gioitinh = excelRow.getCell(1).getStringCellValue();
+                    if (gioitinh.equals("Nam") || gioitinh.equals("nam")) {
+                        gt = 1;
+                    } else {
+                        gt = 0;
+                    }
+                    String sdt = excelRow.getCell(3).getStringCellValue();
+                    Date ngaysinh = (Date) excelRow.getCell(2).getDateCellValue();
+                    java.sql.Date birth = new java.sql.Date(ngaysinh.getTime());
+                    String email = excelRow.getCell(4).getStringCellValue();
+                    if (Validation.isEmpty(tennv) || Validation.isEmpty(email)
+                            || !Validation.isEmail(email) || Validation.isEmpty(sdt)
+                            || Validation.isEmpty(sdt) || !isPhoneNumber(sdt)
+                            || sdt.length() != 10 || Validation.isEmpty(gioitinh)) {
+                        check = 0;
+                    }
+                    if (check == 0) {
+                        k += 1;
+                    } else {
+                        shared.models.NhanVien nvdto = new shared.models.NhanVien(id, tennv, gt, birth, sdt, 1, email);
+                        NhanVienDAO.getInstance().insert(nvdto);
+                    }
+                    JOptionPane.showMessageDialog(null, "Nhập thành công");
+                }
+
+            } catch (FileNotFoundException ex) {
+                System.out.println("Lỗi đọc file");
+            } catch (IOException ex) {
+                System.out.println("Lỗi đọc file");
+            }
+        }
+        if (k != 0) {
+            JOptionPane.showMessageDialog(null, "Những dữ liệu không chuẩn không được thêm vào");
+        }
+    }
+
+    public static boolean isPhoneNumber(String str) {
+        // Loại bỏ khoảng trắng và dấu ngoặc đơn nếu có
+        str = str.replaceAll("\\s+", "").replaceAll("\\(", "").replaceAll("\\)", "").replaceAll("\\-", "");
+
+        // Kiểm tra xem chuỗi có phải là một số điện thoại hợp lệ hay không
+        if (str.matches("\\d{10}")) { // Kiểm tra số điện thoại 10 chữ số
+            return true;
+        } else if (str.matches("\\d{3}-\\d{3}-\\d{4}")) { // Kiểm tra số điện thoại có dấu gạch ngang
+            return true;
+        } else {
+            return str.matches("\\(\\d{3}\\)\\d{3}-\\d{4}"); // Kiểm tra số điện thoại có dấu ngoặc đơn
+        }        // Trả về false nếu chuỗi không phải là số điện thoại hợp lệ
+
+    }
+}

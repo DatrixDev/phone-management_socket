@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="trident-1.5.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/trident-1.5.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/trident-1.5.2.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,36 @@
+<component name="libraryTable">
+  <library name="commons-collections4-4.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/commons-collections4-4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/commons-compress-1.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/commons-io-2.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/curvesapi-1.06.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/flatlaf-3.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/javafx.base.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/javafx.controls.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/javafx.fxml.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/javafx.graphics.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/javafx.media.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/javafx.swing.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/javafx.web.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/javafx-swt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/jgoodies-looks-2.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/jxmapviewer2-2.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/log4j-api-2.23.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/log4j-core-2.23.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/miglayout-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/miglayout-swing.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/mysql-connector-java-8.0.29.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/poi-5.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/poi-ooxml-5.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/poi-ooxml-full-5.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/xmlbeans-5.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/miglayout-core-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/XayDungDoAnQuanLyKhoHangDienThoai/src/lib/miglayout-swing-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="2.83333in" height="2.83333in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 2833 2833"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil1 {fill:#FDFDFD}
+    .fil0 {fill:url(#id0)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="1416.67" y1="2833.33" x2="1416.67" y2="0">
+   <stop offset="0" style="stop-opacity:1; stop-color:#1AA8DC"/>
+   <stop offset="0.490196" style="stop-opacity:1; stop-color:#AE3B89"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#F26270"/>
+  </linearGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <circle class="fil0" cx="1417" cy="1417" r="1417"/>
+  <polygon class="fil1" points="766,2133 766,2133 "/>
+  <path class="fil1" d="M1510 2270l-610 0c-53,0 -106,-24 -135,-61 -20,-24 -28,-53 -21,-81l80 -423c0,0 0,0 0,0 13,-63 44,-120 89,-160 50,-45 113,-69 183,-69l217 0c70,0 133,24 183,69 45,41 77,97 90,160l83 424c0,0 0,0 0,0 5,29 -4,58 -25,83 -30,35 -82,58 -134,58zm-102 -235l-408 0c-13,0 -24,-11 -24,-24l0 -275c0,-13 11,-23 24,-23l408 0c13,0 23,10 23,23l0 275c0,13 -10,24 -23,24zm-385 -47l362 0 0 -228 -362 0 0 228z"/>
+  <path class="fil1" d="M1033 1430l0 -114c0,-13 10,-23 23,-23l300 0c13,0 24,10 24,23l0 114 -66 0 -1 0 -217 0 -1 0 -62 0z"/>
+  <polygon class="fil1" points="1586,650 1586,650 "/>
+  <path class="fil1" d="M1212 1084c-3,-3 -5,-7 -6,-12 -25,-59 6,-145 40,-201 56,-90 232,-211 333,-243 148,-52 409,-118 496,8 6,7 22,31 15,70 -14,75 -108,156 -280,238 -41,20 -78,39 -113,58 -107,57 -201,107 -345,123 50,-82 121,-150 208,-207 54,-34 111,-64 170,-87 24,-10 52,-20 78,-27 37,-9 59,-48 50,-85 -10,-38 -49,-61 -86,-50 -99,27 -202,76 -287,131 -81,53 -155,118 -215,195 -22,28 -41,58 -58,89z"/>
+  <path class="fil1" d="M1206 1340c-1,0 -2,0 -3,-1 -13,-2 -22,-13 -20,-26 16,-106 58,-204 124,-290 53,-69 121,-131 204,-184 139,-90 268,-124 273,-125 13,-4 26,4 29,16 3,13 -5,26 -17,29l0 0c-1,0 -128,33 -261,120 -176,114 -279,263 -305,441 -2,11 -12,20 -24,20z"/>
+ </g>
+</svg>

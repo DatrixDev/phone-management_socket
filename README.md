@@ -1,0 +1,2 @@
+@echo off
+java -jar ""D:\HOCTAP\DO_AN_CO_SO_1\DACS1\phone_management_3Layer-Socket\out\artifacts\Manage_Phone\DACS1.jar""
