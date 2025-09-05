@@ -1,4 +1,4 @@
-package shared;
+package client.view.shared;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +51,6 @@ public class TransparentLoadingSpinner extends JWindow {
         setVisible(true);
         timer.start();
 
-        // Sau X giây tự tắt spinner
         new Timer(milliseconds, e -> {
             timer.stop();
             setVisible(false);

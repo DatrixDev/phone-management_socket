@@ -4,7 +4,7 @@ import client.VKULogin;
 import client.view.shared.Toast;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import network.SocketManager;
-import shared.TransparentLoadingSpinner;
+import client.view.shared.TransparentLoadingSpinner;
 import shared.models.TaiKhoan;
 import shared.models.NhanVien;
 import shared.request.LoginRequest;

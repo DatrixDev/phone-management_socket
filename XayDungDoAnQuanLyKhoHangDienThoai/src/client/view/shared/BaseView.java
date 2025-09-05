@@ -1,7 +1,5 @@
 package client.view.shared;
 
-import shared.MiniSidebarPanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;

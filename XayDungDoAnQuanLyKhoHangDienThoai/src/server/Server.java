@@ -5,6 +5,7 @@ import server.DAO.TaiKhoanDAO;
 import server.DAO.TinNhanDAO;
 import server.handler.ProductHandler;
 import server.handler.ClientHandler;
+import shared.response.DeleteMessageBroadcast;
 import shared.response.GroupUserListResponse;
 import shared.response.HistoryResponse;
 import shared.response.LoginResponse;
@@ -167,7 +168,10 @@ public class Server {
                         }
                         clientHandler.send(new GroupListUpdate(userGroupNames));
                         System.out.println("[Server] Đã gửi GroupListUpdate cho " + req.getUsername() + ": " + userGroupNames.size() + " nhóm.");
-                    } else if (obj instanceof ChatMessage chatMessage) {
+                    }
+
+
+                    else if (obj instanceof ChatMessage chatMessage) {
                         TinNhanDAO.luuTinNhan(chatMessage);
 
                         if (chatMessage.isGroup()) {

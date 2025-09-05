@@ -2,15 +2,13 @@ package client.controller;
 
 import client.view.views.messager;
 import network.SocketManager;
-import shared.models.NhanVien;
 import shared.request.*;
-import shared.response.GroupUserListResponse;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class messagerController {
     private final messager view;
@@ -131,6 +129,7 @@ public class messagerController {
 
 
 
+
     }
 
     private void onUserListUpdate(UserListUpdate update) {
@@ -159,7 +158,7 @@ public class messagerController {
             JOptionPane.showMessageDialog(view, "Bạn chưa chọn người nhận hoặc nhập tin nhắn.");
             return;
         }
-        if(text.equalsIgnoreCase("VKU")){
+        if (text.equalsIgnoreCase("VKU")) {
             text = "Viet Han";
         }
 
@@ -172,7 +171,7 @@ public class messagerController {
                 isGroup ? recipient : null
         );
 
-        System.out.println("Bạn đã gửi dòng tin nhắn "+msg);
+        System.out.println("Bạn đã gửi dòng tin nhắn " + msg);
 
         try {
             sm.send(msg);
@@ -190,10 +189,7 @@ public class messagerController {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(view, "Gửi tin thất bại: " + ex.getMessage());
         }
-
     }
-
-
     private void onReceiveChatMessage(ChatMessage chatMessage) {
         SwingUtilities.invokeLater(() -> {
             String conversationId = chatMessage.isGroup()
@@ -219,6 +215,8 @@ public class messagerController {
         });
     }
 
+
+
     private void uploadFile() {
         String recipient = view.getCurrentRecipient();
         boolean isGroup = view.isCurrentChatIsGroup();
@@ -239,21 +237,21 @@ public class messagerController {
 
                 sm.sendFile(currentUsername, recipient, file.getName(), data, isGroup);
 
-                view.displayFile(currentUsername, file.getName(), data, true,
-                        isGroup ? recipient : "", recipient);
+                // Chỉ tự hiển thị ngay khi chat riêng.
+                // Với nhóm, chờ server broadcast rồi onReceiveFileMessage hiển thị để tránh trùng 2 lần.
+                if (!isGroup) {
+                    view.displayFile(currentUsername, file.getName(), data, true, "", recipient);
+                }
             } catch (IOException e) {
-                e.printStackTrace(); // ghi log ra console
+                e.printStackTrace();
                 JOptionPane.showMessageDialog(view,
                         "Không thể gửi file. Vui lòng kiểm tra lại đường dẫn hoặc kết nối mạng.",
                         "Lỗi gửi file",
                         JOptionPane.ERROR_MESSAGE
                 );
-
             }
         }
     }
-
-
 
     private void onReceiveFileMessage(FileMessage fileMsg) {
         SwingUtilities.invokeLater(() -> {
@@ -274,7 +272,6 @@ public class messagerController {
             );
         });
     }
-
     private void createGroupDialog() {
         JTextField groupNameField = new JTextField();
         JList<String> userList = view.getOnlineUsersList();
@@ -309,5 +306,43 @@ public class messagerController {
             }
         }
     }
+
+    private void showContextMenu(MouseEvent e, String sender, String message, boolean isSender, String conversationId, JPanel messagePanel) {
+        JPopupMenu menu = new JPopupMenu();
+
+        JMenuItem deleteForMe = new JMenuItem("Xóa cho mình");
+        deleteForMe.addActionListener(evt -> {
+            // Xóa tin nhắn khỏi UI phía client
+            JPanel parent = (JPanel) messagePanel.getParent();
+            parent.remove(messagePanel);
+            parent.revalidate();
+            parent.repaint();
+        });
+
+        JMenuItem deleteForAll = new JMenuItem("Xóa cho tất cả");
+        deleteForAll.addActionListener(evt -> {
+            if (!isSender) {
+                JOptionPane.showMessageDialog(view, "Chỉ người gửi mới được xóa cho tất cả.");
+                return;
+            }
+
+            try {
+                sm.send(new DeleteMessageRequest(conversationId, sender, message, view.isCurrentChatIsGroup()));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(view, "Lỗi khi gửi yêu cầu xóa: " + ex.getMessage());
+            }
+
+            // Xóa khỏi UI của người gửi luôn
+            JPanel parent = (JPanel) messagePanel.getParent();
+            parent.remove(messagePanel);
+            parent.revalidate();
+            parent.repaint();
+        });
+
+        menu.add(deleteForMe);
+        menu.add(deleteForAll);
+        menu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
 
 }

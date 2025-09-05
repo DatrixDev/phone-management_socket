@@ -1,4 +1,4 @@
-package shared;
+package client.view.shared;
 
 import javax.swing.*;
 import java.awt.*;
